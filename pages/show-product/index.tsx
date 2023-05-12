@@ -99,24 +99,6 @@ const form = useForm({
                
   }
 
-  // const queryClient = useQueryClient()
-  //   const deleteProduct = async (productID: string) => {
-  //     setLoading(true);
-  //     try {
-  //       const { data } = await axios({
-  //         method: "DELETE",
-  //         url: `http://localhost:5001/api/catalog/deleteProduct/${productID}`,
-         
-  //       })
-  //       queryClient.invalidateQueries({ queryKey: ['productID'] })
-  //       setLoading(false);
-  //     } catch (e) {
-  //       setLoading(false);  
-  //     }
-  //   }
-  
- 
-  
 
 
   const rows = showProducts.map((element, idx) => (

@@ -7,6 +7,7 @@ import { Table, TextInput } from "@mantine/core";
 import axios from "axios";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import Loading from "@/src/component/loading";
 
 
 const ShowCart: NextPageX = () => {
@@ -39,15 +40,21 @@ const ShowCart: NextPageX = () => {
   const deleteCartProduct = (productID: string) => {
     axios.delete(`http://localhost:5001/api/cart/items/${productID}`)
     .then(function (response) {
-      console.log(response)
-      setLoading(true);
-     showNotification({
+     setLoading(true);
+     console.log(response.status);
+     
+     if(response.status == 200 || response.status == 201){
+      showNotification({
         title: "Dear user",
         message: "Product removed from cart successfully",
         color: "green",
       });
-      setLoading(false)
       getCarts();
+      setLoading(false)
+     }
+     
+      
+      
     })
     .catch(function (error) {
       console.log(error);
@@ -70,7 +77,7 @@ const ShowCart: NextPageX = () => {
       <td>{element['price']}</td>
       <td>{
       <div className="flex items-center gap-2">
-        <button onClick={() => deleteCartProduct(element['_id'])} className="bg-[#CC553D] p-2 rounded-md text-white">Delete</button>
+        <button onClick={() => deleteCartProduct(element['productID'])} className="bg-[#CC553D] p-2 rounded-md text-white">Delete</button>
       </div>
       } </td>
       <td>
