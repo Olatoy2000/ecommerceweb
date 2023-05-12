@@ -70,7 +70,7 @@ function Sidebar() {
                       <Link
                         href={item.href}
                         className={clsx(
-                          pathname.includes(item.routeID)
+                          pathname.includes("item.routeID")
                             ? "bg-[#E1E5FA]  whitespace-nowrap p-2 rounded-md  font-semibold"
                             : " whitespace-nowrap font-medium",
                           "flex items-center gap-3"

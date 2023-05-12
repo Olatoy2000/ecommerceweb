@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NextPageX } from "@/types/next";
 import HRDashboardLayout from "@/src/layouts/hrDashboard";
 import { Table, TextInput } from "@mantine/core";
-import { useStateValue } from "@/src/store/useGlobalState";
 import { useForm } from "@mantine/form";
-import { useApiData } from "@/src/hooks/useApiData";
 import axios from "axios";
 import { showNotification } from "@mantine/notifications";
+import { useQueryClient } from "react-query";
+import Loading from "@/src/component/loading";
 
-// // useage
 interface Get {
   _id: string,
   name: string,
@@ -19,10 +18,6 @@ interface Get {
 
 
 const ShowProduct: NextPageX = () => {
-//   const { state, setState } = useStateValue();
-// console.log("state", state )
-
-
 
 const form = useForm({
   initialValues: {
@@ -32,34 +27,20 @@ const form = useForm({
 });
 
 
-  //   const { data, isLoading, error } = useApiData<Get[]>(
-  //   "localhost:5001/api/catalog/getProducts",
-  //   "get"
-  // );
+
 
   const [showProducts, setShowProducts] = useState([])
+  const [loading, setLoading] = useState(false);
 
 
   const getProducts = () => {
     axios.get('http://localhost:5001/api/catalog/getProducts')
     .then(function (response) {
-      console.log(response.data);
       setShowProducts(response.data.data)
-    //  showNotification({
-    //     title: "Dear user",
-    //     message: "you are successfully logged in",
-    //     color: "green",
-    //   });
-
-      // router.push("./show-product")
+ 
     })
     .catch(function (error) {
       console.log(error);
-    //   showNotification({
-    //     title: "Dear user",
-    //     message: "Incorrect Password or Username",
-    //     color: "red",
-    //   });
     });
                
   }
@@ -69,15 +50,10 @@ const form = useForm({
   const addToCart = (productID: string, quantity: number) => {
     axios.post('http://localhost:5001/api/cart/add', {productID: productID, quantity: quantity})
     .then(function (response) {
-      console.log(productID);
-      setShowProducts(response.data.data)
      showNotification({
-        title: "Dear user",
-        message: "Product added successfully",
+        message: "Product successfully added to cart",
         color: "green",
       });
-
-      // router.push("./show-product")
     })
     .catch(function (error) {
       console.log(error);
@@ -90,6 +66,7 @@ const form = useForm({
                
   }
 
+
   useEffect(() => {
     getProducts()
   }, [])
@@ -99,11 +76,59 @@ const form = useForm({
   }
 
 
+
+  const deleteProduct = (productID: string) => {
+    axios.delete(`http://localhost:5001/api/catalog/deleteProduct/${productID}`)
+    .then(function (response) {
+      setLoading(true);
+     showNotification({
+        title: "Dear user",
+        message: "Product removed successfully",
+        color: "green",
+      });
+      setLoading(false)
+      getProducts();
+    })
+    .catch(function (error) {
+      console.log(error);
+      showNotification({
+        message: "Product not removed",
+        color: "red",
+      });
+    });
+               
+  }
+
+  // const queryClient = useQueryClient()
+  //   const deleteProduct = async (productID: string) => {
+  //     setLoading(true);
+  //     try {
+  //       const { data } = await axios({
+  //         method: "DELETE",
+  //         url: `http://localhost:5001/api/catalog/deleteProduct/${productID}`,
+         
+  //       })
+  //       queryClient.invalidateQueries({ queryKey: ['productID'] })
+  //       setLoading(false);
+  //     } catch (e) {
+  //       setLoading(false);  
+  //     }
+  //   }
+  
+ 
+  
+
+
   const rows = showProducts.map((element, idx) => (
     <tr key={element['price']}>
       <td>{element['name']}</td>
       <td>{element['price']}</td>
-      <td><img src={element["image"]} /></td>
+      <td>
+        <button>
+          <img 
+          className="w-20" src={element["image"]} />
+        </button>
+      </td>
       <td>{
       <div className="flex items-center gap-2">
         {element['quantity']} 
@@ -121,7 +146,8 @@ const form = useForm({
         />
       </div>
       } </td>
-      <td><button onClick={() => addCart(element['productID'], form.values.quantity)} className="bg-[#000] text-white px-2 py-1 rounded-md">Buy</button></td>
+      <td><button onClick={() => addCart(element['_id'], form.values.quantity)} className="bg-[#000] text-white px-2 py-1 rounded-md">Buy</button></td>
+      <td><button onClick={() => deleteProduct(element['_id'])} className="bg-[#CC553D] flex items-center text-white p-2 rounded-md">Delete</button></td>
     </tr>
 
   ));
@@ -136,10 +162,12 @@ const form = useForm({
           <th>Picture</th>
           <th>Quantity</th>
           <th>Buy Button</th>
+          <th>Delete Product</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
     </Table>
+    <Loading loading={loading} />
       </article>
   );
 };
@@ -152,4 +180,5 @@ ShowProduct.LayoutProps = { pageLabel: [
   }
   ] 
 };
+
 export default ShowProduct;

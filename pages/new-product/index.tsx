@@ -36,7 +36,7 @@ const NewProduct: NextPageX = () => {
         className="flex items-center justify-between px-3 py-2  text-white bg-[#0362a9]">
         <Add size="16" color="#fff" />
             Add New Product</button>
-    <NewProductModal newProductOpened={newProductOpened} closeNewProduct={closeNewProduct} openNewProduct={openNewProduct} />
+    <NewProductModal newProductOpened={newProductOpened} closeNewProduct={closeNewProduct} />
     </article>
   );
 };

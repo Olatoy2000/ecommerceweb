@@ -55,7 +55,7 @@ const form = useForm({
   const rows = viewOrder.map((element, idx) => (
     <tr key={element['price']}>
       <td>{element['customerName']}</td>
-      <td>{element['productID'].name}</td>
+      <td>{element && element['productID'] && element['productID']['name']}</td>
       <td><img src={element["image"] ?? "--"}  /> </td>
       <td>{element['price']}</td>
       <td>{element['quantity']}</td>
