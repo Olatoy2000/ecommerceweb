@@ -41,7 +41,6 @@ const form = useForm({
     })
     .catch(function (error) {
       console.log(error);
-  
     });
                
   }

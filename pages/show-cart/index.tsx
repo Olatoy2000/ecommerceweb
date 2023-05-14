@@ -1,21 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NextPageX } from "@/types/next";
 import HRDashboardLayout from "@/src/layouts/hrDashboard";
-
-import Link from "next/link";
 import { Table, TextInput } from "@mantine/core";
 import axios from "axios";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import Loading from "@/src/component/loading";
 
 
 const ShowCart: NextPageX = () => {
-
+const [loading, setLoading] = useState(false)
   const [showCart, setShowCart] = useState([])
   const form = useForm({
     initialValues: {
-      quantity: 1,
+      quantity: 0,
       
     },
   });
@@ -27,7 +24,7 @@ const ShowCart: NextPageX = () => {
       setShowCart(response.data.data)
     })
     .catch(function (error) {
-      console.log(error);
+      (error);
    
     });
                
@@ -41,7 +38,6 @@ const ShowCart: NextPageX = () => {
     axios.delete(`http://localhost:5001/api/cart/items/${productID}`)
     .then(function (response) {
      setLoading(true);
-     console.log(response.status);
      
      if(response.status == 200 || response.status == 201){
       showNotification({
@@ -119,7 +115,17 @@ ShowCart.LayoutProps = { pageLabel: [
   ] 
 };
 export default ShowCart;
-function setLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
+// function setLoading(arg0: boolean) {
+//   throw new Error("Function not implemented.");
+// }
 
+
+// const logInUser = () => {
+//   axios.post('http://localhost:5001/api/users/login', userLoginDetailsForm.values)
+//   .then(function (response) {
+//     setState({isAdmin: response.data?.data?.is_admin})
+//    showNotification({
+//       title: "Dear user",
+//       message: "you are successfully logged in",
+//       color: "green",
+//     });

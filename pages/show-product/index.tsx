@@ -21,7 +21,7 @@ const ShowProduct: NextPageX = () => {
 
 const form = useForm({
   initialValues: {
-    quantity: 1,
+    quantity: 0,
     
   },
 });

@@ -6,6 +6,7 @@ import router from 'next/router';
 import axios from 'axios';
 import { showNotification } from '@mantine/notifications';
 import { useStateValue } from '../store/useGlobalState';
+import Cookies from 'js-cookie';
 
 export default function OpenLoginModal({ loginOpened, closeLogin}: any) {
   const { state, setState } = useStateValue();
@@ -18,8 +19,8 @@ export default function OpenLoginModal({ loginOpened, closeLogin}: any) {
   const logInUser = () => {
     axios.post('http://localhost:5001/api/users/login', userLoginDetailsForm.values)
     .then(function (response) {
-      console.log("response", response)
       setState({isAdmin: response?.data?.data?.is_admin})
+      Cookies.set("localState", JSON.stringify({isAdmin: response?.data?.data?.is_admin}))
      showNotification({
         title: "Dear user",
         message: "you are successfully logged in",
