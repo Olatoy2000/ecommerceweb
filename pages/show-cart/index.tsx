@@ -1,27 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NextPageX } from "@/types/next";
 import HRDashboardLayout from "@/src/layouts/hrDashboard";
 import { Table, TextInput } from "@mantine/core";
 import axios from "axios";
-import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 
 
 const ShowCart: NextPageX = () => {
 const [loading, setLoading] = useState(false)
   const [showCart, setShowCart] = useState([])
-  // const form = useForm({
-  //   initialValues: {
-  //     quantity: 0,
-      
-  //   },
-  // });
-
 
   const getCarts = () => {
-    axios.get('http://localhost:5001/api/cart')
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}cart`)
     .then(function (response) {
-      console.log(response.data.data)
       setShowCart(response.data.data)
     })
     .catch(function (error) {
@@ -36,7 +27,7 @@ const [loading, setLoading] = useState(false)
   }, [])
 
   const deleteCartProduct = (productID: string) => {
-    axios.delete(`http://localhost:5001/api/cart/items/${productID}`)
+    axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}cart/items/${productID}`)
     .then(function (response) {
      setLoading(true);
      

@@ -33,7 +33,7 @@ const form = useForm({
   const [viewOrder, setViewOrder] = useState([])
 
   const getProducts = () => {
-    axios.get('http://localhost:5001/api/catalog/getOrders')
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}catalog/getOrders`)
     .then(function (response) {
       console.log(response.data);
       setViewOrder(response.data.data)

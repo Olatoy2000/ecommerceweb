@@ -17,12 +17,11 @@ export default function OpenLoginModal({ loginOpened, closeLogin}: any) {
     },
   });
   const logInUser = () => {
-    axios.post('http://localhost:5001/api/users/login', userLoginDetailsForm.values)
+    axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}users/login`, userLoginDetailsForm.values)
     .then(function (response) {
       setState({isAdmin: response?.data?.data?.is_admin})
       Cookies.set("localState", JSON.stringify({isAdmin: response?.data?.data?.is_admin}))
      showNotification({
-        title: "Dear user",
         message: "you are successfully logged in",
         color: "green",
       });

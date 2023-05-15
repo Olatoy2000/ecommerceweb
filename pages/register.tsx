@@ -27,7 +27,7 @@ const register = () => {
       });
 
       const registerUser = () => {
-        axios.post('http://localhost:5001/api/users/register', newUserInformationForm.values)
+        axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}users/register`, newUserInformationForm.values)
         .then(function (response) {
           console.log(response);
           open()

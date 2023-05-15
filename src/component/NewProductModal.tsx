@@ -55,7 +55,7 @@ interface NewProductData {
             "price": newProductData.price,
              image: newProductData.image
              }
-      const response = await axios.post("http://localhost:5001/api/catalog/newProduct", data, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}catalog/newProduct`, data, {
         headers: { "Content-Type": "application/json" },
       });
       console.log(response.data);

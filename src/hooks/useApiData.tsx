@@ -13,13 +13,4 @@ export function useApiData<Data>(
     return response.data;
   });
 }
-// useage
-// interface Post {
-//   id: number;
-//   title: string;
-// }
 
-// const { data, isLoading, error } = useApiData<Post[]>(
-//   "https://api.example.com/posts",
-//   "posts"
-// );

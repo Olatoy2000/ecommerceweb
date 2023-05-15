@@ -17,13 +17,6 @@ const NewProduct: NextPageX = () => {
     const [newProductOpened, { open: openNewProduct, close: closeNewProduct }] = useDisclosure(false);
 
     const { state, setState } = useStateValue();
-    
-
-
- 
-
-
-
  
   return (
     <article className="flex flex-col flex-1 bg-white gap-8 shadow-md items-center justify-center"> 

@@ -9,7 +9,7 @@ export default function HeaderLayout({ pageLabel, userLoginDetailsForm }: any) {
   const [loginDetails, setLoginDetails] = useState([])
   const showAdmin = true;
   const logInUser = () => {
-    axios.post("https://localhost:5001/api/users/login", userLoginDetailsForm.values)
+    axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}users/login`, userLoginDetailsForm.values)
    .then(function (response) {
     setLoginDetails(response.data)
    })

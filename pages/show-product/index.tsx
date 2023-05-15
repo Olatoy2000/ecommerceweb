@@ -34,7 +34,7 @@ const ShowProduct: NextPageX = () => {
 
 
   const getProducts = () => {
-    axios.get('http://localhost:5001/api/catalog/getProducts')
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}catalog/getProducts`)
     .then(function (response) {
       setShowProducts(response.data.data)
  
@@ -49,7 +49,7 @@ const ShowProduct: NextPageX = () => {
 
   const addToCart = (productID: string, quantity: number) => {
     console.log(quantity)
-    axios.post('http://localhost:5001/api/cart/add', {productID: productID, quantity: quantity})
+    axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}cart/add`, {productID: productID, quantity: quantity})
     .then(function (response) {
      showNotification({
         message: "Product successfully added to cart",
@@ -79,7 +79,7 @@ const ShowProduct: NextPageX = () => {
 
 
   const deleteProduct = (productID: string) => {
-    axios.delete(`http://localhost:5001/api/catalog/deleteProduct/${productID}`)
+    axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}catalog/deleteProduct/${productID}`)
     .then(function (response) {
       setLoading(true);
      showNotification({
