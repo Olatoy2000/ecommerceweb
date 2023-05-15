@@ -1,12 +1,18 @@
 import { Fragment, JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactFragment, ReactNode, ReactPortal, useContext, useEffect, useState } from "react";
 import { Url } from "next/dist/shared/lib/router/router";
 import axios from "axios";
+import { useStateValue } from "../store/useGlobalState";
 
 export default function HeaderLayout({ pageLabel, userLoginDetailsForm }: any) {
 
-
+  const {state} = useStateValue()
+  const [loginDetails, setLoginDetails] = useState([])
+  const showAdmin = true;
   const logInUser = () => {
     axios.post("https://localhost:5001/api/users/login", userLoginDetailsForm.values)
+   .then(function (response) {
+    setLoginDetails(response.data)
+   })
   }
 
 
@@ -29,7 +35,7 @@ export default function HeaderLayout({ pageLabel, userLoginDetailsForm }: any) {
           <div className="flex items-center gap-3">
               <img src="./default-profile-picture.png" className="w-8 h-8 rounded-full" alt="" />
             <p className="flex flex-col gap-2 font-medium text-xds-eneutral-11 dark:text-white">
-              <span className="text-xs dark:text-[#C1C2C6]">User</span>
+              <span className="text-xs text-white">{state?.isAdmin ? "Admin" : "User"}</span>
             </p>          
           </div>
         </div>

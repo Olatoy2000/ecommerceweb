@@ -5,7 +5,6 @@ import { Table, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import axios from "axios";
 import { showNotification } from "@mantine/notifications";
-import { useQueryClient } from "react-query";
 import Loading from "@/src/component/loading";
 
 interface Get {
@@ -16,15 +15,16 @@ interface Get {
   image: string,
 }
 
+interface FormValues {
+  [key: string]: number; // Assuming the quantity fields have a number type
+}
 
 const ShowProduct: NextPageX = () => {
-
-const form = useForm({
-  initialValues: {
-    quantity: 0,
-    
-  },
-});
+  const form = useForm<FormValues>({
+    initialValues: {
+      // Initial values for the form
+    },
+  });
 
 
 
@@ -48,6 +48,7 @@ const form = useForm({
 
 
   const addToCart = (productID: string, quantity: number) => {
+    console.log(quantity)
     axios.post('http://localhost:5001/api/cart/add', {productID: productID, quantity: quantity})
     .then(function (response) {
      showNotification({
@@ -101,7 +102,7 @@ const form = useForm({
 
 
 
-  const rows = showProducts.map((element, idx) => (
+  const rows = showProducts.map((element, _id) => (
     <tr key={element['price']}>
       <td>{element['name']}</td>
       <td>{element['price']}</td>
@@ -115,21 +116,23 @@ const form = useForm({
       <div className="flex items-center gap-2">
         {element['quantity']} 
         <TextInput
-          type="number"
-          classNames={{
-            root: "flex flex-col gap-2",
-           
-            input:
-              "py-3 pl-4 !h-[30px] border border-solid rounded-xl",
-          }}
-       
-          placeholder="quantity"
-          {...form.getInputProps(`quantity${idx}`)}
+        type="number"
+        classNames={{
+          root: "flex flex-col gap-2",
+          input: "py-3 pl-4 !h-[30px] border border-solid rounded-xl",
+        }}
+        placeholder="Quantity"
+        value={form.values[`quantity${_id}` as keyof FormValues] || ""}
+        onChange={(event) => form.setFieldValue(`quantity${_id}`, Number(event.target.value))}
         />
       </div>
       } </td>
-      <td><button onClick={() => addCart(element['_id'], form.values.quantity)} className="bg-[#000] text-white px-2 py-1 rounded-md">Buy</button></td>
-      <td><button onClick={() => deleteProduct(element['_id'])} className="bg-[#CC553D] flex items-center text-white p-2 rounded-md">Delete</button></td>
+      <td>
+        <button onClick={() => addCart(element['_id'], form.values[`quantity${_id}`])} className="bg-[#000] text-white px-2 py-1 rounded-md">Buy</button>
+      </td>
+      <td>
+        <button onClick={() => deleteProduct(element['_id'])} className="bg-[#CC553D] flex items-center text-white p-2 rounded-md">Delete</button>
+      </td>
     </tr>
 
   ));

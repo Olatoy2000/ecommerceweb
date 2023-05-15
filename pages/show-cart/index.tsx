@@ -10,17 +10,18 @@ import { showNotification } from "@mantine/notifications";
 const ShowCart: NextPageX = () => {
 const [loading, setLoading] = useState(false)
   const [showCart, setShowCart] = useState([])
-  const form = useForm({
-    initialValues: {
-      quantity: 0,
+  // const form = useForm({
+  //   initialValues: {
+  //     quantity: 0,
       
-    },
-  });
+  //   },
+  // });
 
 
   const getCarts = () => {
     axios.get('http://localhost:5001/api/cart')
     .then(function (response) {
+      console.log(response.data.data)
       setShowCart(response.data.data)
     })
     .catch(function (error) {
@@ -61,9 +62,6 @@ const [loading, setLoading] = useState(false)
     });
                
   }
-
-
-
 
   const rows = showCart.map((element) => (
     <tr key={element['name']}>
@@ -115,17 +113,3 @@ ShowCart.LayoutProps = { pageLabel: [
   ] 
 };
 export default ShowCart;
-// function setLoading(arg0: boolean) {
-//   throw new Error("Function not implemented.");
-// }
-
-
-// const logInUser = () => {
-//   axios.post('http://localhost:5001/api/users/login', userLoginDetailsForm.values)
-//   .then(function (response) {
-//     setState({isAdmin: response.data?.data?.is_admin})
-//    showNotification({
-//       title: "Dear user",
-//       message: "you are successfully logged in",
-//       color: "green",
-//     });

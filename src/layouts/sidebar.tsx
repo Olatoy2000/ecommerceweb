@@ -18,7 +18,6 @@ function Sidebar({}: any) {
   const showAdmin = true;
   const { pathname, push } = useRouter();
   const { state } = useStateValue()
-  console.log(state)
   const sideLinksAdmin: AsideType = [
     {
       groupTitle: "Admin",
